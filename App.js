@@ -1,90 +1,69 @@
-import React,{Component} from 'react';
-import { StyleSheet, Text, View,TextInput, Button } from 'react-native';
-import ListItem from "./src/components/Listitem/Listitem";
+import { AppLoading } from 'expo';
+import { Asset } from 'expo-asset';
+import * as Font from 'expo-font';
+import React, { useState } from 'react';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-class App extends Component  {
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import reducer from './reducers'
+import middleware from './middleware'
 
-  state = {
-    placeName: "",
-    places: []
+import AppNavigator from './navigation/AppNavigator';
+
+export default function App(props) {
+  const [isLoadingComplete, setLoadingComplete] = useState(false);
+
+  if (!isLoadingComplete && !props.skipLoadingScreen) {
+    return (
+      <AppLoading
+        startAsync={loadResourcesAsync}
+        onError={handleLoadingError}
+        onFinish={() => handleFinishLoading(setLoadingComplete)}
+      />
+    );
+  } else {
+    return (
+      <Provider store={createStore(reducer, middleware)} >
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <AppNavigator />
+        </View>
+      </Provider>
+    );
   }
-
-  placeHolderchangeHandler = (val) => {
-    this.setState({
-      placeName: val
-    })
-  }
-  submitPlaceHandler = () => {
-    if(this.state.placeName.trim() === ""){
-      console.log("if statement")
-      return;
-     
-    }
-
-    this.setState(preState => {
-      return {
-        places: preState.places.concat(preState.placeName)
-      };
-    })
-  }
-
-  render(){
-
-    const placesOut = this.state.places.map((place,i) => (
-       <ListItem 
-       key = {i}
-       placeName = {place}
-       />
-    ));
-
-  return (
-    <View style={styles.container}>
-      <Text>Milch App</Text>
-      <View style ={styles.inputContainer}>
-      
-      <TextInput  
-      style = {styles.placeInput}
-      placeholder = "As your wish"
-      value={this.state.placeName}
-      onChangeText = {this.placeHolderchangeHandler}
-       />
-      
-        <Button 
-        title="Click"
-        styles = {styles.placeButton}
-        onPress = {this.submitPlaceHandler} /> 
-      </View>
-      <View 
-      style = {{width: "100%" , marginBottom: 5}} >
-        {placesOut}
-      </View>
-    </View>
-  );
 }
+
+async function loadResourcesAsync() {
+  await Promise.all([
+    Asset.loadAsync([
+      require('./assets/images/robot-dev.png'),
+      require('./assets/images/robot-prod.png'),
+    ]),
+    Font.loadAsync({
+      // This is the font that we are using for our tab bar
+      ...Ionicons.font,
+      // We include SpaceMono because we use it in HomeScreen.js. Feel free to
+      // remove this if you are not using it in your app
+      'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+    }),
+  ]);
+}
+
+function handleLoadingError(error: Error) {
+  // In this case, you might want to report the error to your error reporting
+  // service, for example Sentry
+  console.warn(error);
+}
+
+function handleFinishLoading(setLoadingComplete) {
+  setLoadingComplete(true);
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 25,
-    backgroundColor: 'wheat',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    flexDirection: "column"
+    backgroundColor: '#fff',
   },
-  inputContainer : {
-    //flex: 1,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  placeInput: {
-    width: "70%"
-  },
-  placeButton: {
-    width: "30%"
-  }
 });
-
-export default App;
