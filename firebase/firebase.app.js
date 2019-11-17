@@ -20,7 +20,7 @@ auth.useDeviceLanguage();
 
 export const database = firebase.database();
 
-export const dbPostsRef = database.ref('posts');
+export const dbcustomerRef = database.ref('customer');
 export const dbUsersRef = database.ref('users');
 export const dbDonationsRef = database.ref('donations');
 export const dbEventsRef = database.ref('events');

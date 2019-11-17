@@ -42,6 +42,7 @@ const PostsStack = createStackNavigator(
 
 PostsStack.navigationOptions = {
   tabBarLabel: 'Posts',
+  //Yearly
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-list-box' : 'md-list-box'} />
   ),
@@ -55,7 +56,7 @@ const TeamStack = createStackNavigator(
 );
 
 TeamStack.navigationOptions = {
-  tabBarLabel: 'Team',
+  tabBarLabel: 'Product',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-people' : 'md-people'} />
   ),

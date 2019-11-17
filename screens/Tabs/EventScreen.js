@@ -1,44 +1,86 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, ActivityIndicator, View, Image } from 'react-native';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+
+import { dbcustomerRef } from '../../firebase/firebase.app'
+import { ScrollView, StyleSheet, Text, ActivityIndicator, View, Image,TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { MonoText } from '../../components/common/StyledText';
 import { fetchEvents, timeToString } from '../../actions/events';
+import Addmember from './Addmember';
+import CustomerProfile from './CustomerProfile'
+
+
 
 class EventScreen extends React.Component {
+
+
+  state = { 
+    customerslist: [],
+    name: "",
+    phone: "",
+    location: ""
+
+  }
+
   static navigationOptions = {
-    title: 'Upcoming Event',
+    title: 'Add member',
   };
 
-  componentDidMount = () => {
-    this.props.fetchEvents()
-  }
+  componentWillMount(){
 
+    dbcustomerRef.on('value',  (snapshot) => {  
+
+       const a = Object.keys(snapshot.val()).map((val) => { 
+
+        return snapshot.val()[val]
+      })
+      const cus = []
+      for(i = 0; i<a.length; i++)
+      cus.push(a[i]["name"])
+      this.setState({customerslist: cus})
+    })}
+
+  // componentDidMount = () => {
+  //   this.props.fetchEvents()
+  //   }
+
+  customerProfileHandler = (name,key) => {
+      <CustomerProfile 
+      customername = {name}
+      key = {key}
+      />
+      
+      this.props.navigation.navigate("CustomerProfile")
+  }
+ 
   render() {
-    const { event } = this.props
-    if (!event) {
+
       return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-          <ActivityIndicator />
-        </View>
+
+        
+        <ScrollView style={styles.scrollViewStyle}>
+        
+
+        <CommonButton title="Add Customer" onPress={() =>  this.props.navigation.navigate("Addmember")} />  
+
+          {this.state.customerslist.map((name,key) => {
+         return <TouchableOpacity  onPress = {() => this.customerProfileHandler(name,key)}>
+                  
+                <MonoText key = {key} style ={styles.TextStyle}>{name}</MonoText>
+              </TouchableOpacity>
+        
+                
+                
+          })}
+                  
+          </ScrollView>
       )
     }
-
-    const { title, timestamp, address, images } = event
-    return (
-      <ScrollView
-        style={styles.container}
-      >
-        <MonoText style={styles.title} >{title}</MonoText>
-        <Image
-          style={styles.eventImage}
-          source={{ uri: images[0] }}
-        />
-        <MonoText style={styles.timestamp} >{timeToString(timestamp)}</MonoText>
-        <Text style={styles.address} >{address}</Text>
-      </ScrollView>
-    );
-  }
 }
+
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -62,18 +104,30 @@ const styles = StyleSheet.create({
     borderColor: '#333',
     borderWidth: 2,
     borderRadius: 10
+  },
+  TextStyle:{
+    fontSize : 25,
+     textAlign: 'center'
   }
 });
 
-const mapStateToProps = ({ events }) => {
-  const eventsArray = Object.keys(events).map((eventId) => events[eventId])
-  return {
-    event: eventsArray[0],
-  }
-}
+// const mapStateToProps = ({ events }) => {
+//   const eventsArray = Object.keys(events).map((eventId) => events[eventId])
+//   return {
+//     event: eventsArray[0],
+//   }
+// }
 
-const mapDispatchToProps = (dispatch) => ({
-  fetchEvents: () => dispatch(fetchEvents()),
+// const mapDispatchToProps = (dispatch) => ({
+//   fetchEvents: () => dispatch(fetchEvents()),
+// })
+
+export default createStackNavigator({
+    Home: EventScreen,
+    Addmember: Addmember,
+    CustomerProfile: CustomerProfile
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventScreen);
+ 
+
+//export default connect(mapStateToProps, mapDispatchToProps)(EventScreen);

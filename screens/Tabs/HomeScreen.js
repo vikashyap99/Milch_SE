@@ -14,10 +14,11 @@ import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { fetchDonations } from '../../actions/donations';
 import { fetchContacts } from '../../actions/contacts';
-import { auth } from '../../firebase/firebase.app';
+import { auth , dbcustomerRef} from '../../firebase/firebase.app';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class HomeScreen extends React.Component {
+
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -47,9 +48,13 @@ class HomeScreen extends React.Component {
     }
   };
 
+ 
+  
+
   componentDidMount() {
     this.props.fetchDonations();
     this.props.fetchContacts();
+    
   }
 
   render() {
@@ -68,19 +73,19 @@ class HomeScreen extends React.Component {
       <ScrollView style={styles.scrollViewStyle}>
         <MonoText style={styles.name} >{currentUser.displayName}</MonoText>
         <MonoText style={styles.email} >{currentUser.email}</MonoText>
-        <View style={styles.helpBox} >
+        {/* <View style={styles.helpBox} >
           <MonoText style={styles.helpBoxheading} >Thank you for your support !!</MonoText>
           <MonoText style={styles.personalDonation} >You have donated ₹{personalDonation}</MonoText>
           <MonoText style={styles.personalDonation} >This helped total {parseInt(personalDonation / 22)} girls</MonoText>
           <MonoText style={styles.personalDonation} >Your community have donated ₹{totalDonation}</MonoText>
           <MonoText style={styles.personalDonation} >This helped total {parseInt(totalDonation / 22)} girls</MonoText>
-        </View>
-        <MonoText style={styles.hurray} >Keep it going !!</MonoText>
-        <MonoText style={styles.hurray} >Society needs people like you !!</MonoText>
+    </View> */}
+        {/* <MonoText style={styles.hurray} >Dairy Name</MonoText>
+        <MonoText style={styles.hurray} >Location</MonoText>
         <View style={styles.helpBox} >
-          <MonoText style={styles.personalDonation} >In total we managed to get ₹{total}</MonoText>
-          <MonoText style={styles.personalDonation} >This helped total {parseInt(total / 22)} girls</MonoText>
-        </View>
+          <MonoText style={styles.personalDonation} >This month Credit ₹{total}</MonoText>
+          <MonoText style={styles.personalDonation} >Total Credit {parseInt(total / 22)} </MonoText>
+        </View> */}
       </ScrollView>
     );
   }
@@ -121,6 +126,10 @@ const styles = StyleSheet.create({
   hurray: {
     fontSize: 15,
     color: '#555'
+  },
+  TextStyle:{
+    fontSize : 25,
+     textAlign: 'center'
   }
 });
 
