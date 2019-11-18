@@ -73,6 +73,9 @@ class HomeScreen extends React.Component {
       <ScrollView style={styles.scrollViewStyle}>
         <MonoText style={styles.name} >{currentUser.displayName}</MonoText>
         <MonoText style={styles.email} >{currentUser.email}</MonoText>
+        <MonoText>Dairy Name</MonoText>
+        <MonoText>Dairy Location</MonoText>
+        <MonoText>Product List</MonoText>
         {/* <View style={styles.helpBox} >
           <MonoText style={styles.helpBoxheading} >Thank you for your support !!</MonoText>
           <MonoText style={styles.personalDonation} >You have donated ₹{personalDonation}</MonoText>

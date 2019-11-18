@@ -84,7 +84,7 @@ const EventStack = createStackNavigator(
 );
 
 EventStack.navigationOptions = {
-  tabBarLabel: 'Event',
+  tabBarLabel: 'Member',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-megaphone' : 'md-megaphone'} />
   ),
@@ -92,8 +92,8 @@ EventStack.navigationOptions = {
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  TeamStack,
-  PostsStack,
+ // TeamStack,
+  //PostsStack,
   EventStack,
   HelpStack,
 },

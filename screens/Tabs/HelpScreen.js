@@ -16,16 +16,16 @@ class HelpScreen extends Component {
   render() {
     return (
       <ScrollView style={styles.scrollViewStyle} >
-        <MonoText style={styles.heading} >Pencil Pen</MonoText>
+        <MonoText style={styles.heading} >Milch</MonoText>
         <Text style={styles.text} >
-          We at PencilPen Organization is dedicated to working with gov schools, NGOs and rural India closely to solve the basic and urgent problems of women and child education and healthcare. We are working to create the world largest community of intellectuals and rational thinkers to come together to participate in the process.
+          We at Milch Organization is dedicated to working with Dairy. We are working to create the world largest community of intellectuals and rational thinkers to come together to participate in the process.
         </Text>
-        <Button style={styles.button} title="Be a part of PencilPen" onPress={() => {
+        {/* <Button style={styles.button} title="Be a part of PencilPen" onPress={() => {
           this.props.navigation.navigate('Donate')
         }} />
         <Button style={styles.button} title="All Donations" onPress={() => {
           this.props.navigation.navigate('AllDonations')
-        }} />
+        }} /> */}
       </ScrollView>
     );
   }
